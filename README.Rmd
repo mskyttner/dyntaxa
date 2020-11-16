@@ -12,7 +12,12 @@ knitr::opts_chunk$set(
   out.width = "100%"
 )
 ```
+
 # dyntaxa
+
+<!-- badges: start -->
+[![R build status](https://github.com/mskyttner/dyntaxa/workflows/R-CMD-check/badge.svg)](https://github.com/mskyttner/dyntaxa/actions)
+<!-- badges: end -->
 
 The goal of the `dyntaxa` R package is to provide a read-only R package to interface with Dyntaxa - the taxonomic database of organisms in Sweden. 
 
@@ -28,11 +33,10 @@ Liljeblad J (2019). Dyntaxa. Svensk taxonomisk databas. ArtDatabanken. Checklist
 
 ## Installation
 
-You can install the `dyntaxa` R package from [GitHub](https://github.com/bioatlas/dyntaxa) with:
+You can install the `dyntaxa` R package from [GitHub](https://github.com/mskyttner/dyntaxa) with:
 
 ``` r
-library(devtools)
-install_github("bioatlas/dyntaxa", build_opts = c("--no-resave-data", "--no-manual"))
+remotes::install_github("mskyttner/dyntaxa")
 ```
 
 ## Example usage
@@ -49,65 +53,39 @@ This package can be used to automate the following tasks:
 Here are some short and simple usage examples which shows you how to download and access data from Dyntaxa for those tasks. 
 
 ```{r eval=TRUE}
-
 # we use dplyr for data manipulation (pipe, filtering etc)
 suppressPackageStartupMessages(library(dplyr))
 
+
+
 library(dyntaxa)
 
-# looking up identifiers/keys from taxon names and vice versa
+#lookup taxonomic name from taxonomic identifier
+dyntaxa_search('"urn:lsid:dyntaxa.se:Taxon:220023"') %>% 
+  pull(scientificName)
 
-# taxonomic name from taxonomic identifier
-dyntaxa_name_from_id(5000001)
+# lookup taxonomic identifier from taxonomic name
+dyntaxa_search("Alces+alces") %>% pull(taxonId)
 
-# taxonomic identifier from taxonomic name
-key <- dyntaxa_id_from_name("Alces alces")
-key
-
-# the taxon key or identifier is often needed to retrieve taxonomic data
-
-# taxonomic hierarchy/classification from identifier or name
-dyntaxa_classification(key)
-
-# taxa downstream from identifier or name
-dyntaxa_downstream(dyntaxa_id_from_name("Cervidae"))
-
-# taxonomic immediate children of an identifier or name
-dyntaxa_children(dyntaxa_id_from_name("Carnivora"))
-
-# taxa downstream of a specific taxon identifier 
-# can be filtered at species level (or at other ranks)
-dyntaxa_downstream(dyntaxa_id_from_name("Carnivora")) %>% 
-  filter(taxonRank == "species")
-
-# search a fulltext index of Dyntaxa a vernacular name
-dyntaxa_search_all("blåklocka") %>% 
-  select(taxonId, scientificName, vernacularName, title, creator)
-
-# another example of a full text search 
-dyntaxa_search_all("Thomas Karlssons Kärlväxtlista") %>%
-  filter(taxonRank == "family")
-
-# what are synonyms for Sagedia zonata?
-dyntaxa_synonyms(dyntaxa_id_from_name("Sagedia zonata"))
-
-# more examples for synonyms
-dyntaxa_search_all("scientificName:Phyllachora graminis")
-dyntaxa_synonyms(dyntaxa_id_from_name("Phyllachora graminis"))
-
-# does "Citronfjäril" / "Gonepteryx rhamni" have synonyms?
-key <- dyntaxa_search_vernacular("citronfjäril")$taxonId
-dyntaxa_name_from_id(key)
-dyntaxa_synonyms(key)
+# search fulltext index for several terms
+dyntaxa_search("blåklocka OR vitsippa")
 
 ```
 
-## Other use cases
+## Archive for dyntaxa datasets
 
-The vignette provides more usage information on other common use cases, such as:
+Available older dyntaxa database files can be listed from the file mirror archive:
 
-- Using the above functions with vectors of several keys/identifiers or names
-- Resolving potentially misspelled scientific names 
-- Exporting data
-- Looking at counts / aggregates
+```{r eval=TRUE}
 
+dyntaxa_archive() %>% slice(1:5)
+
+```
+
+Some files are duplicates, find out which ones:
+
+```{r eval=TRUE}
+
+knitr::kable(dyntaxa_archive_diffs())
+
+```
