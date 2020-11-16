@@ -29,6 +29,11 @@
 # Needed for use of . in magrittr pipelines
 if (getRversion() >= "2.15.1")
   globalVariables(names = unlist(strsplit(split = " ",
-paste(". %>% GET arrange as_tibble bind_rows content download.file isPreferredName mutate nomenclaturalStatus recode taxonId unzip acceptedNameUsageID ancestorId creator d desc from language left_join name parentNameUsageID rankDistance scientificName scientificNameAuthorship taxonRank taxonomicStatus title to vars vernacularName link param threatStatus is_exact_match"))))
+paste(". %>% GET arrange as_tibble bind_rows content download.file", 
+"isPreferredName mutate nomenclaturalStatus recode taxonId unzip",
+"acceptedNameUsageID ancestorId creator d desc from language left_join",
+"name parentNameUsageID rankDistance scientificName scientificNameAuthorship",
+"taxonRank taxonomicStatus title to vars vernacularName link param threatStatus",
+"is_exact_match distribution_ext dyntaxa_rds fn identifier_ext init key ts vern"))))
 
 NULL

@@ -1,4 +1,4 @@
-dyntaxa_rds <- NULL
+#dyntaxa_rds <- NULL
 
 .onAttach <- function(lib, pkg){
 
@@ -12,19 +12,19 @@ dyntaxa_rds <- NULL
       |_____|"
   packageStartupMessage(welcome)
 
-  rds <- file.path(rappdirs::app_dir("dyntaxa")$config(), "dyntaxa.rds")
-  if (!file.exists(rds)) {
+  #rds <- file.path(rappdirs::app_dir("dyntaxa")$config(), "dyntaxa.rds")
+  if (!file.exists(dyntaxa_fts())) {
     packageStartupMessage("Cannot find Dyntaxa data locally...")
-    packageStartupMessage("... attempting download using library(dyntaxa); dyntaxa_init()")
-    dyntaxa_init()
+    packageStartupMessage("... attempting download using library(dyntaxa); dyntaxa_init_fts()")
+    dyntaxa_init_fts()
   }
   
 }
 
 .onLoad <- function(libname, pkgname){
-  rds <- file.path(rappdirs::app_dir("dyntaxa")$config(), "dyntaxa.rds")
-  if (file.exists(rds)) {
-    dyntaxa_rds <<- readRDS(rds)
-  }
+  #rds <- file.path(rappdirs::app_dir("dyntaxa")$config(), "dyntaxa.rds")
+  #if (file.exists(rds)) {
+  #  dyntaxa_rds <<- readRDS(rds)
+  #}
 }
 

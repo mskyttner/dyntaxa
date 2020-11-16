@@ -17,7 +17,7 @@ Search full text search index of Dyntaxa data for scientific name using a search
 }
 \examples{
 \dontrun{
-dyntaxa_search_name("\\"Alces alces\\" OR alces")
+dyntaxa_search_name("\"Alces alces\" OR alces")
 }
 }
 \seealso{
