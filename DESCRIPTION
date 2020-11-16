@@ -32,7 +32,8 @@ Imports:
     stringdist,
     httr,
     lubridate,
-    stringr
+    stringr,
+    dbplyr
 Suggests: 
     testthat,
     knitr,
